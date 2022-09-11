@@ -1,0 +1,247 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link href="/style-b.css?version=0bf99498305b3a00d28a93038e0e9a2b" rel="stylesheet">
+    <link rel="preconnect" href="https://embedded-nft-smmall.wunderbucket.dev/" crossorigin="true">
+    <link rel="dns-prefetch" href="https://embedded-nft-smmall.wunderbucket.dev/">
+  </head>
+
+  <body class="metal">
+    <div class="wrap">
+      <div class="revealer" onclick="reveal(this)" style="display: none;">
+        <div class="top"><img src="/reveal-icon.svg?version=4e33d22757d3a993ddc62f93b51c987a"></div>
+        <div class="bottom"><img src="/click-to-reveal.png?version=d6b19080167e0c442bef45ccfabe69c3" width="265" height="16"></div>
+      </div>
+      <div class="top">
+        <div class="level">
+          <div class="level-inside">
+            <div>Level <span class="level-number">3</span></div>
+            <div class="level-values">
+            <div class="level-complete"></div><div class="level-complete"></div><div class="level-complete"></div><div class="level-empty"></div><div class="level-empty"></div></div>
+          </div>
+          <div class="level-inside level-inside--warpeace ready">
+            <div class="death state-value" style="display: block;">
+              Dead
+              <div class="death-value">
+                <img src="/skull.svg?version=74f4cede6b2268951c19c56c28006cc5" alt="death">
+              </div>
+            </div>
+            <div class="tournament-not-active state-value" style="display: block;">
+              Not active in Tournament
+            </div>
+            <div class="tournament-active state-value">
+              Active in Tournament:
+              <br>
+              <span class="tournament-active-type"></span>
+            </div>
+          </div>
+        </div>
+        <div class="hp">
+          HP
+          <span class="hp-record-value">72</span>
+        </div>
+      </div>
+      <img class="main" onclick="toggle()" src="https://challengers.peacefall.xyz/12/1.gif">
+      <div class="bottom">
+        <div class="hamburger" onclick="toggle()">
+          <svg class="icon" width="14" height="14" fill="white">
+            <rect y="1" width="14" height="2"></rect>
+            <rect y="6" width="14" height="2"></rect>
+            <rect y="11" width="14" height="2"></rect>
+          </svg>
+        </div>
+        <div class="win-record">
+          <div class="wins">
+            Wins: <span class="win-record-value">3</span>
+          </div>
+        </div>
+      </div>
+      <div class="overlay" onclick="toggle()"></div>
+      <div class="side" onclick="toggle()">
+        <div class="thumbs"><div class="thumb"><img version="1" src="https://challengers.peacefall.xyz/12/0.gif"><div class="thumb-title">L1</div></div><div class="thumb"><img version="2" src="https://challengers.peacefall.xyz/12/1.gif"><div class="thumb-title">L2</div></div><div class="thumb"><img version="3" src="https://challengers.peacefall.xyz/12/2.gif"><div class="thumb-title">L3</div></div><div class="thumb empty"><img version="4" src="/blank.png"><div class="thumb-title">L4</div></div><div class="thumb empty"><img version="5" src="/blank.png"><div class="thumb-title">L5</div></div><div class="thumb"><img version="6" src="https://challengers.peacefall.xyz/12/dead.png"><div class="thumb-title">Dead</div></div></div>
+      </div>
+    </div>
+
+    <script>
+      const root = 'https://challengers.peacefall.xyz';
+      const id = new URL(window.location.href).searchParams.get('id');
+
+      function getAssetLevel(level) {
+        if (typeof level === 'number') {
+          return level - 1;
+        }
+        return parseInt(level, 10) - 1;
+      }
+      fetch(`https://api.keyval.org/get/peacefall-${id}-revealed`)
+        .then(res => res.json())
+        .then(({
+          val
+        }) => {
+          console.log(val);
+          configure(val == 'true');
+        })
+        .catch(err => {
+          console.log(err);
+          configure(true);
+        });
+
+      function configure(revealed) {
+        if (revealed) {
+          document.querySelector('.revealer').style.display = 'none';
+        } else {
+          document.querySelector('.revealer').style.display = 'block';
+        }
+        const href = `${root}/${id}.json`;
+        fetch(href).then((response) => {
+          return response.json();
+        }).then((json) => {
+          // Configure character
+          console.log('json', json);
+          const attributes = {};
+          json.attributes.forEach((attribute) => {
+            attributes[attribute.trait_type] = attribute.value;
+          });
+          document.body.classList.add(attributes.Syndicate.toLowerCase());
+          document.querySelector('.hp-record-value').textContent = attributes.HP;
+          for (let i = 0; i < 5; i++) {
+            const level = document.createElement('div');
+            level.className = attributes.Level > i ? 'level-complete' : 'level-empty';
+            document.querySelector('.level-values').appendChild(level);
+          }
+
+          const isDead = attributes.Dead === 'Yes';
+          const activeInTournament = attributes['Active in Tournament'];
+          if (isDead) {
+            document.querySelector('.death').style.display = 'block';
+          }
+
+          if (activeInTournament) {
+            document.querySelector('.tournament-active').style.display = 'block';
+            document.querySelector('.tournament-active-type').textContent = activeInTournament;
+          } else {
+            document.querySelector('.tournament-not-active').style.display = 'block';
+          }
+          document.querySelector('.level-inside--warpeace').classList.add('ready');
+
+          let wins = 0;
+
+          if (json.chronicle) {
+            json.chronicle.forEach((battle) => {
+              if (battle.victor === parseInt(id, 10)) {
+                wins++;
+              }
+            });
+          }
+
+          if (json.context_chronicles['champions-2022-07']) {
+            json.context_chronicles['champions-2022-07'].forEach((battle) => {
+              if (battle.victor === parseInt(id, 10)) {
+                wins++;
+              }
+            });
+          }
+
+          if (json.context_chronicles['peaceful-2022-07']) {
+            json.context_chronicles['peaceful-2022-07'].forEach((battle) => {
+              if (battle.victor === parseInt(id, 10)) {
+                wins++;
+              }
+            });
+          }
+
+          if (json.context_chronicles['fallen-2022-07']) {
+            json.context_chronicles['fallen-2022-07'].forEach((battle) => {
+              if (battle.victor === parseInt(id, 10)) {
+                wins++;
+              }
+            });
+          }
+
+          document.querySelector('.win-record-value').textContent = wins;
+          document.querySelector('.level-number').textContent = attributes.Level;
+          if (attributes.Dead === 'Yes') {
+            document.querySelector('.main').setAttribute('src', `${root}/${id}/dead.png`);
+          } else {
+            document.querySelector('.main').setAttribute('src', `${root}/${id}/${getAssetLevel(attributes.Level)}.gif`);
+          }
+          let i = 1;
+          const maxAmount = 6
+          while (i < maxAmount) {
+            const thumbWrap = document.createElement('div');
+            thumbWrap.className = 'thumb';
+            const thumbTitle = document.createElement('div');
+            thumbTitle.className = 'thumb-title';
+            thumbTitle.textContent = `L${i}`;
+            const img = document.createElement('img');
+            img.setAttribute('version', i);
+            if (attributes.Level >= i) {
+              img.setAttribute('src', `${root}/${id}/${getAssetLevel(i)}.gif`);
+            } else {
+              img.setAttribute('src', '/blank.png');
+              thumbWrap.classList.add('empty');
+            }
+            img.onerror = () => {
+              img.setAttribute('src', '/blank.png');
+              thumbWrap.classList.add('empty');
+            };
+            img.onclick = (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              document.querySelector('.main').src = img.src;
+              document.querySelector('body').classList.remove('open');
+            }
+            thumbWrap.appendChild(img);
+            thumbWrap.appendChild(thumbTitle);
+            document.querySelector('.thumbs').appendChild(thumbWrap);
+            i++;
+          }
+          // if dead, add box for dead state
+          if (isDead) {
+            const thumbWrap = document.createElement('div');
+            thumbWrap.className = 'thumb';
+            const thumbTitle = document.createElement('div');
+            thumbTitle.className = 'thumb-title';
+            thumbTitle.textContent = 'Dead';
+            const img = document.createElement('img');
+            img.setAttribute('version', i);
+            img.setAttribute('src', `${root}/${id}/dead.png`);
+            img.onerror = () => {
+              img.setAttribute('src', '/blank.png');
+              thumbWrap.classList.add('empty');
+            };
+            img.onclick = (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              document.querySelector('.main').src = img.src;
+              document.querySelector('body').classList.remove('open');
+            }
+            thumbWrap.appendChild(img);
+            thumbWrap.appendChild(thumbTitle);
+            document.querySelector('.thumbs').appendChild(thumbWrap);
+          }
+        });
+
+
+
+        document.querySelector('.main').setAttribute('src', `${root}/${id}/0.gif`);
+      }
+
+      function reveal(el) {
+        el.classList.add('revealed');
+        fetch(`https://api.keyval.org/set/peacefall-${id}-revealed/true`);
+        setTimeout(() => {
+          document.querySelector('.revealer').style.display = 'none';
+        }, 5000);
+      }
+
+      function toggle() {
+        document.querySelector('body').classList.toggle('open');
+      }
+    </script>
+
+  
+
+</body></html>
