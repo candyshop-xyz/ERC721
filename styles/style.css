@@ -1,0 +1,342 @@
+@font-face {
+  font-family: SometypeMono;
+  font-style: normal;
+  font-weight: normal;
+  src: url('/SometypeMono-Regular.ttf?version=bf36ed941ee9d771fa3aa98b538f3a39') format('truetype');
+}
+* {
+  transition-timing-function: cubic-bezier(0, 0, 0, 1);
+  user-select: none;
+}
+
+:root {
+  --syndicate-color-water: #6DD3FF;
+  --syndicate-color-timber: #33F899;
+  --syndicate-color-metal: #C1A4FF;
+  --syndicate-color-earth: #FF9635;
+  --syndicate-color-fire: #FF6645;
+  --syndicate-color-spirit: #FFF;
+  --syndicate-color-renegade: rgb(4,16,17);
+}
+
+body {
+  margin: 0;
+  font-family: 'SometypeMono', Arial, Helvetica, sans-serif;
+  color: black;
+  font-size: 14px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 140%;
+  height: 100vh;
+}
+
+body.renegade {
+  color: white;
+}
+
+.wrap {
+  position: relative;
+  max-width: 582px;
+  overflow: hidden;
+  width: 100%;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.top, .bottom {
+  display: flex;
+  position: absolute;
+  z-index: 10;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.bottom {
+  bottom: 0;
+  align-items: end;
+}
+
+img {
+  position: relative;
+  left: 0;
+  transition: left .2s;
+  display: block;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+  image-rendering: optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+img.main {
+  width: 100%;
+  background-color: black;
+  cursor: pointer;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: .1s opacity;
+}
+
+.open .overlay {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.side {
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  top: -50%;
+  position: absolute;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: scroll;
+  pointer-events: none;
+  transition: all .2s;
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+}
+
+.open .side {
+  opacity: 1;
+  top: 0;
+  pointer-events: all;
+}
+
+.side .thumbs {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(3,1fr);
+  grid-template-rows: repeat(2,1fr);
+  justify-content: space-between;
+}
+
+.thumbs .thumb {
+  width: 100%;
+  position: relative;
+}
+
+.thumbs .thumb .thumb-title {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: black;
+}
+
+.thumb.empty {
+  background: black;
+}
+
+.metal .thumb.empty {
+  background: var(--syndicate-color-metal);
+}
+
+.water .thumb.empty {
+  background: var(--syndicate-color-water);
+}
+
+.timber .thumb.empty {
+  background: var(--syndicate-color-timber);
+}
+
+.earth .thumb.empty {
+  background: var(--syndicate-color-earth);
+}
+
+.fire .thumb.empty {
+  background: var(--syndicate-color-fire);
+}
+
+.spirit .thumb.empty {
+  background: var(--syndicate-color-spirit);
+}
+
+.renegade .thumb.empty {
+  background: var(--syndicate-color-renegade);
+}
+
+.renegade .thumbs .thumb .thumb-title {
+  color: white;
+}
+
+.thumb.empty .thumb-title {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+}
+
+.thumb.empty img {
+  opacity: 0;
+}
+
+.side img {
+  cursor: pointer;
+  transition: all .1s;
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  object-fit: contain;
+}
+
+.hamburger {
+  padding: 8px;
+  cursor: pointer;
+  transition: all .2s;
+  background: black;
+}
+
+.hamburger:hover {
+  background: rgb(64 0 0 / 30%);
+}
+
+.hamburger:active {
+  background: rgb(64 0 0 / 40%);
+  transform: translateY(1px);
+}
+
+body.renegade .hamburger {
+  filter: invert(100%);
+}
+
+.open .hamburger {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hamburger .icon {
+  display: block;
+  transition: all .2s;
+  transform-origin: 50% 50%;
+}
+
+.revealer {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.revealer .top {
+  height: 50%;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  background-color: rgb(99, 99, 99);
+  border-bottom: 4px solid black;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 1.5s ease-in;
+}
+
+.revealer .top img {
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.revealer .bottom {
+  height: calc(50% - 8px);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: rgb(99, 99, 99);
+  display: flex;
+  border-top: 4px solid rgb(151, 151, 151);
+  align-items: center;
+  justify-content: center;
+  transition: all 1.5s ease-in;
+}
+
+.revealer.revealed .top {
+  top: -55%;
+}
+
+.revealer.revealed .bottom {
+  bottom: -50%;
+}
+
+.level {
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.level-inside {
+  gap: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.level-inside--warpeace {
+  display: none;
+}
+
+.level-inside--warpeace.ready {
+  display: flex;
+}
+
+.level-values {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.level-values div {
+  width: 10px;
+  height: 10px;
+  border: 1px solid black;
+  transform: rotate(45deg);
+}
+
+.level-values div.level-complete {
+  background-color: black;
+}
+
+body.renegade .level-values div {
+  filter: invert(100%);
+}
+
+.hp {
+  display: flex;
+  align-items: end;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hp-record-value {
+  font-size: 20px;
+  font-weight: 700;
+  display: block;
+}
+
+.win-record .wins, .win-record .losses {
+  text-align: right;
+}
+
+.state-value {
+  display: none;
+}
