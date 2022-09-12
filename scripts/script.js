@@ -8,7 +8,6 @@
         }
         return parseInt(level, 10) - 1;
       }
-      
 
       function configure(revealed) {
         if (revealed) {
@@ -162,3 +161,4 @@
       function toggle() {
         document.querySelector('body').classList.toggle('open');
       }
+    
