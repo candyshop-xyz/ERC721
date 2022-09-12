@@ -8,18 +8,7 @@
         }
         return parseInt(level, 10) - 1;
       }
-      fetch(`https://api.keyval.org/get/peacefall-${id}-revealed`)
-        .then(res => res.json())
-        .then(({
-          val
-        }) => {
-          console.log(val);
-          configure(val == 'true');
-        })
-        .catch(err => {
-          console.log(err);
-          configure(true);
-        });
+      
 
       function configure(revealed) {
         if (revealed) {
