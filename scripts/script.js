@@ -1,4 +1,4 @@
- <script>
+
       const root = 'https://challengers.peacefall.xyz';
       const id = new URL(window.location.href).searchParams.get('id');
 
@@ -162,4 +162,3 @@
       function toggle() {
         document.querySelector('body').classList.toggle('open');
       }
-    </script>
