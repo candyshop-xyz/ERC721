@@ -150,13 +150,6 @@
         document.querySelector('.main').setAttribute('src', `${root}/${id}/0.gif`);
       }
 
-      function reveal(el) {
-        el.classList.add('revealed');
-        fetch(`https://api.keyval.org/set/peacefall-${id}-revealed/true`);
-        setTimeout(() => {
-          document.querySelector('.revealer').style.display = 'none';
-        }, 5000);
-      }
 
       function toggle() {
         document.querySelector('body').classList.toggle('open');
