@@ -1,9 +1,10 @@
 
       var imageNodes = document.getElementsByTagName('img');
-      console.log(imageNodes[1].src);
-      for (var i=0; i<imageNodes.length; i++){          
-            imageNodes[i].addEventListener('click', function() {
-                  document.querySelector('.main').src =  imageNodes[i].src;
+
+      for (var i=1; i<imageNodes.length; i++){          
+            imageNodes[1].addEventListener('click', function() {
+                  console.log(imageNodes[1].src);
+                  document.querySelector('.main').src =  imageNodes[1].src;
                   document.querySelector('body').classList.remove('open');
             });
       }
