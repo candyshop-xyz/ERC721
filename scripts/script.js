@@ -1,5 +1,6 @@
 
       var imageNodes = document.getElementsByTagName('img');
+      console.log(imageNodes.length);
       for (var i=0; i<imageNodes.length; i++){          
             imageNodes[i].addEventListener('click', function() {
                   document.querySelector('.main').src =  imageNodes[i].src;
