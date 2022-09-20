@@ -1,9 +1,7 @@
-
-      var imageNodes = document.getElementsByTagName('img');
-
-      for (var i=1; i<imageNodes.length; i++){          
-            imageNodes[i].addEventListener('click', function() {
-                  document.querySelector('.main').src = imageNodes[i].src;
+var imageNodes = document.getElementsByTagName('img');
+for (var i=1; i<imageNodes.length; i++){          
+            imageNodes[i].addEventListener('click', function(e => i) {
+                  document.querySelector('.main').src = imageNodes[e].src;
                   document.querySelector('body').classList.remove('open');
             });
       }
