@@ -3,7 +3,7 @@
 
       for (var i=1; i<imageNodes.length; i++){          
             imageNodes[i].addEventListener('click', function() {
-                  document.querySelector('.main').src =  imageNodes[i].src;
+                  document.querySelector('.main').src = imageNodes[i].src;
                   document.querySelector('body').classList.remove('open');
             });
       }
